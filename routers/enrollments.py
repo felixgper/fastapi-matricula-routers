@@ -39,6 +39,20 @@ async def post_enrollment(enrollment : Enrollment):
     list_enrollments.append(enrollment)
     return enrollment
 
+@router.delete("/{student_id}/{course_id}")
+async def delete_enrollment(student_id: int, course_id: int):
+
+    found = False
+
+    for index, value in enumerate(list_enrollments):
+        if value.student_id == student_id and value.course_id == course_id:
+            del list_enrollments[index]
+            found = True
+            return {"message": "Matrícula eliminada"}
+
+    if not found:
+        raise HTTPException(status_code=404, detail="LA MATRICULA NO EXISTE")
+
 def search_student(student_id: int):
     for student in list_student:
         if student.id == student_id:
